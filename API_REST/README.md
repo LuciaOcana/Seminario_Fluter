@@ -1,1 +1,5 @@
-# Prueba_1_Node.js
+# API seminario flutter
+
+# To execute:
+· tsc
+· node build/index.js

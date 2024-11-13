@@ -1,4 +1,11 @@
-# flutter_application_1
+# Seminario Flutter
+
+
+# To execute:
+flutter run or f5
+
+
+
 
 A new Flutter project.
 

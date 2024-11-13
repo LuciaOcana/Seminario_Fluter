@@ -1,23 +1,16 @@
+// user.dart
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_application_1/widgets/widget_user_list.dart'; // Importa tu nuevo widget
 
-
-class UserPage extends StatefulWidget{
+class UserPage extends StatefulWidget {
   @override
   _UserPageState createState() => _UserPageState();
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('User'),
-      ),
-    );
-  }
 }
 
 class _UserPageState extends State<UserPage> {
-  List<dynamic> _data = [];
+  List<User> _users = [];
 
   @override
   void initState() {
@@ -30,9 +23,10 @@ class _UserPageState extends State<UserPage> {
       final response = await http.get(Uri.parse('http://10.0.2.2:3000/api/user')); // Cambia el puerto y la ruta según tu configuración
 
       if (response.statusCode == 200) {
-        // Decodifica la respuesta JSON
+        // Decodifica la respuesta JSON y crea una lista de User
         setState(() {
-          _data = json.decode(response.body);
+          final List<dynamic> data = json.decode(response.body);
+          _users = data.map((item) => User.fromJson(item)).toList();
         });
       } else {
         throw Exception('Error al cargar los datos');
@@ -45,24 +39,10 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Datos de la API Local')),
-      body: _data.isEmpty
+      appBar: AppBar(title: Text('Usuarios')),
+      body: _users.isEmpty
           ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: _data.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                    title: Text(_data[index]['name']), 
-                    subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(_data[index]['mail']),     // Primer subtítulo (correo)
-                      Text(_data[index]['comment']),  // Segundo subtítulo (comentario)
-                    ],
-                  ),
-                );
-              },
-            ),
+          : UserListWidget(users: _users), // Usando el nuevo widget
     );
   }
 }
