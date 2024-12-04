@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import '../models/userModel.dart'; // Ajusta la ruta si tu modelo está en otra carpeta
+import '../models/user.dart';
 
 class UserCard extends StatelessWidget {
   final UserModel user;
+  final Function onEdit;
 
-  const UserCard({Key? key, required this.user}) : super(key: key);
+  const UserCard({Key? key, required this.user, required this.onEdit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,14 @@ class UserCard extends StatelessWidget {
             Text(user.mail),
             const SizedBox(height: 8),
             Text(user.comment ?? "Sin comentarios"),
+            // Botón de edición en la esquina inferior derecha
+            Align(
+              alignment: Alignment.bottomRight,
+              child: IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => onEdit(user), // Llamamos a la función pasada
+              ),
+            ),
           ],
         ),
       ),
