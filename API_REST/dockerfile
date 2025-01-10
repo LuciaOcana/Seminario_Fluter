@@ -1,17 +1,26 @@
-# Exemple per a un projecte Node.js
-FROM node:18
+# Use an official Node.js runtime as the base image
+FROM node:18-alpine
 
-# Estableix el directori de treball dins el contenidor
+# Create app directory
 WORKDIR /app
 
-# Copia els fitxers de l'aplicació
+# Install app dependencies
 COPY package*.json ./
+
+# Install global dependencies for TypeScript
+RUN npm install -g typescript
+
+# Install app dependencies
 RUN npm install
 
+# Copy the rest of the app source
 COPY . .
 
-# Exposa el port que utilitza el teu backend
+# Compile TypeScript code
+RUN tsc
+
+# Make port 5000 available to the world outside this container
 EXPOSE 3000
 
-# Comanda per executar l'aplicació
+# Run app when the container launches
 CMD ["npm", "start"]
