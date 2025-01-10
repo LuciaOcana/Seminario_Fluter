@@ -1,0 +1,17 @@
+# Exemple per a un projecte Node.js
+FROM node:18
+
+# Estableix el directori de treball dins el contenidor
+WORKDIR /app
+
+# Copia els fitxers de l'aplicació
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# Exposa el port que utilitza el teu backend
+EXPOSE 3000
+
+# Comanda per executar l'aplicació
+CMD ["npm", "start"]
